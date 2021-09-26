@@ -28,7 +28,7 @@ $ deactivate
 
 3. csvファイルを出力
 ```shell
-$ cd && python3 ./main.py
+$ python3 ./main.py
 ```
 
 4. `main.py`と同じディレクトリに`curricula_schedule.csv`が作成されるので,これをGoogle Calendarに読み込ませる
