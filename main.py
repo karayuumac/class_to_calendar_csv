@@ -69,31 +69,30 @@ exclude_date = [
 # 授業が始まる日
 start_day = datetime.date(2021, 9, 27)
 
-if __name__ == '__main__':
-  df = pd.DataFrame(columns=["Subject", "Start Date", "End Date", "Start Time", "End Time", "Location", "Private"])
+df = pd.DataFrame(columns=["Subject", "Start Date", "End Date", "Start Time", "End Time", "Location", "Private"])
 
-  for curriculum in curricula:
-    diff_days = curriculum["weekday"] - start_day.weekday() if start_day.weekday() <= curriculum["weekday"] \
-      else curriculum["weekday"] + 7 - start_day.weekday()
+for curriculum in curricula:
+  diff_days = curriculum["weekday"] - start_day.weekday() if start_day.weekday() <= curriculum["weekday"] \
+    else curriculum["weekday"] + 7 - start_day.weekday()
 
-    diff = datetime.timedelta(days=diff_days)
-    first_day = start_day + diff
+  diff = datetime.timedelta(days=diff_days)
+  first_day = start_day + diff
 
-    week = 1
-    stopper = total_number_of_lessons
-    while week <= stopper:
-      day = first_day + datetime.timedelta(days=7 * (week - 1))
-      if not day in exclude_date:
-        day_str = day.strftime("%Y/%m/%d")
-        time = period_to_time(curriculum["period"])
-        row = pd.DataFrame(
-          [[curriculum["subject"], day_str, day_str, time["Start Time"], time["End Time"], curriculum["location"],
-            "TRUE"]],
-          columns=df.columns
-        )
-        df = df.append(row, ignore_index=True)
-      else:
-        stopper += 1
-      week += 1
+  week = 1
+  stopper = total_number_of_lessons
+  while week <= stopper:
+    day = first_day + datetime.timedelta(days=7 * (week - 1))
+    if not day in exclude_date:
+      day_str = day.strftime("%Y/%m/%d")
+      time = period_to_time(curriculum["period"])
+      row = pd.DataFrame(
+        [[curriculum["subject"], day_str, day_str, time["Start Time"], time["End Time"], curriculum["location"],
+          "TRUE"]],
+        columns=df.columns
+      )
+      df = df.append(row, ignore_index=True)
+    else:
+      stopper += 1
+    week += 1
 
-  df.to_csv("./curricula_schedule.csv", index=False)
+df.to_csv("./curricula_schedule.csv", index=False)
